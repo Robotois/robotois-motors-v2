@@ -1,5 +1,5 @@
 {
-  "name": "ServosModule",
+  "name": "robotois-servos",
   "version": "1.0.0",
   "description": "Node library for controlling Servos",
   "main": "index.js",
