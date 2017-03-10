@@ -1,26 +1,25 @@
-var _servos = require('../index.js'),
-  servos = new _servos();
+const Servos = require('../index.js');
 
-var angle = 0,sum = 10;
+const servos = new Servos();
 
-setInterval(()=> {
-  servos.setAngle(1,angle);
+let angle = 0;
+let sum = 10;
 
-  if(angle == 90){
+setInterval(() => {
+  servos.setAngle(1, angle);
+  if (angle === 90) {
     sum = -10;
   }
-
-  if(angle == -90){
+  if (angle === -90) {
     sum = 10;
   }
-
   angle += sum;
-},250);
+}, 250);
 
-process.on('SIGTERM', function () {
+process.on('SIGTERM', () => {
   process.exit();
 });
 
-process.on('SIGINT', function () {
+process.on('SIGINT', () => {
   process.exit();
 });
