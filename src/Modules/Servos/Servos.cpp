@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Servos.cpp
  * Author: yova
- * 
+ *
  * Created on 21 de diciembre de 2015, 11:10 PM
  */
 #include "Servos.h"
@@ -13,7 +13,7 @@
 Servos::Servos(uint8_t _addr) {
     pwmModule = new PCA9685(_addr);
     pwmModule->setPreScale(0x7D); // - Prescaler => 50Hz
-    
+
 //    slave_address = 0x41;
     maxTravel = 90.0f;
     minTravel = -90.0f;
@@ -38,7 +38,7 @@ void Servos::setAngle(uint8_t servoNumber, float degree){
     offTime = centerOffTime + round(degree*angleTimeRatio);
     if(servoNumber <1 and servoNumber > 3){
         printf("Error: Wrong Channel Selection for the Servo Module...\n");
-        return;    
+        return;
     }
     pwmModule->setPWM(servoNumber-1,offTime);
 }
@@ -48,15 +48,15 @@ void Servos::constrain(float* value, float min, float max){
         *value = max;
         return;
     }
-    
+
     if(*value < min){
         *value = min;
         return;
-    }    
+    }
 }
 
 void Servos::release(){
-    printf("[ServosModule] => Released\n");
     pwmModule->release();
     delete pwmModule;
+    printf("[ServosModule] => Released\n");
 }
