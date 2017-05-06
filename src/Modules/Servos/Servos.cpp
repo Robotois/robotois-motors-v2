@@ -5,20 +5,16 @@
  * Created on 21 de diciembre de 2015, 11:10 PM
  */
 #include "Servos.h"
-#include<cmath>
+#include <cmath>
 #include <stdint.h>
 #include <stdlib.h>
-#include<iostream>
+#include <iostream>
 
 Servos::Servos(uint8_t _addr) {
     pwmModule = new PCA9685(_addr);
-    pwmModule->setPreScale(0x7D); // - Prescaler => 50Hz
+    pwmModule->setPreScale(SERVOS_PCA_PRESCALE);
 
-//    slave_address = 0x41;
-    maxTravel = 90.0f;
-    minTravel = -90.0f;
-    angleTimeRatio = (float)((maxOnTime - minOnTime)/180.0f);
-    centerOffTime = 307; // => 1500us
+    angleTimeRatio = (SERVOS_MAX_ON_TIME - SERVOS_MIN_ON_TIME)/180.0f;
 }
 
 Servos::Servos(const Servos& orig) {
@@ -34,8 +30,9 @@ Servos::~Servos() {
  * para un angulo de 0° el servo apunta verticalmente hacia arriba.
  */
 void Servos::setAngle(uint8_t servoNumber, float degree){
-    constrain(&degree,minTravel,maxTravel);
-    offTime = centerOffTime + round(degree*angleTimeRatio);
+    float deg = constrain(degree, SERVOS_MIN_TRAVEL, SERVOS_MAX_TRAVEL);
+    offTime = (uint16_t) round(SERVOS_CENTER_OFF_TIME + deg*angleTimeRatio);
+    // printf("Angle: %0.2f, OffTime: %d\n", deg, offTime);
     if(servoNumber <1 and servoNumber > 3){
         printf("Error: Wrong Channel Selection for the Servo Module...\n");
         return;
@@ -43,16 +40,16 @@ void Servos::setAngle(uint8_t servoNumber, float degree){
     pwmModule->setPWM(servoNumber-1,offTime);
 }
 
-void Servos::constrain(float* value, float min, float max){
-    if(*value > max){
-        *value = max;
-        return;
+float Servos::constrain(float value, float min, float max){
+    if(value > max){
+      return max;
     }
 
-    if(*value < min){
-        *value = min;
-        return;
+    if(value < min){
+      return min;
     }
+
+    return value;
 }
 
 void Servos::release(){
