@@ -10,3 +10,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#C++ object files
+*.o
+runner
+*.gch

@@ -3,7 +3,7 @@
 
 #include <node.h>
 #include <node_object_wrap.h>
-#include "../Modules/Servos/Servos.h"
+#include "../Servos.h"
 
 class ServosWrapper : public node::ObjectWrap {
 public:

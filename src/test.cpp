@@ -1,9 +1,11 @@
 #include <cstdio>
 #include <bcm2835.h>
+#include <chrono>
+#include <thread>
 
 // #include "./Libraries/PCA9685/PCA9685.h"
-#include "./Modules/Servos/Servos.h"
-#include "./Libraries/Timer/AccurateTiming.h"
+#include "./Servos.h"
+//#include "./Libraries/Timer/AccurateTiming.h"
 
 void i2c_init();
 void i2c_end();
@@ -18,17 +20,17 @@ int main(int argc, char const *argv[]) {
   while (true) {
     servos->setAngle(1, angle);
 
-    if(angle == 90) {
+    if(angle >= 90) {
       sum = -10;
     }
 
-    if(angle == -90){
+    if(angle <= -90){
       sum = 10;
     }
 
     angle += sum;
 
-    mDelay(500);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
 
   return 0;

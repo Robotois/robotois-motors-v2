@@ -6,7 +6,6 @@
  */
 #include "Servos.h"
 #include <cmath>
-#include <stdint.h>
 #include <stdlib.h>
 #include <iostream>
 
