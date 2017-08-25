@@ -1,12 +1,13 @@
-const Servos = require('../index.js');
+const ServoController = require('../');
 
-const servos = new Servos();
+const servoController = new ServoController(0);
+const servo = servoController.createServo(2);
 
 let angle = 0;
 let sum = 10;
 
 setInterval(() => {
-  servos.setAngle(1, angle);
+  servo.setAngle(angle);
   if (angle === 90) {
     sum = -10;
   }

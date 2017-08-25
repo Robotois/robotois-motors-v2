@@ -2,7 +2,7 @@
   "name": "robotois-servos",
   "version": "1.0.0",
   "description": "Node library for controlling Servos",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
