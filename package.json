@@ -1,5 +1,5 @@
 {
-  "name": "robotois-servos",
+  "name": "robotois-servo-controller",
   "version": "1.0.0",
   "description": "Node library for controlling Servos",
   "main": "src/index.js",
