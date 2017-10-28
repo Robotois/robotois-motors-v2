@@ -32,9 +32,9 @@ ServoController.prototype.servoAngle = function servoAngle(servoNumber) {
 };
   // servoNumber => angle => this.servos.setAngle(servoNumber, angle);
 
-ServoController.prototype.createServo = function createServo(servoNumber) {
+ServoController.prototype.createServo = function createServo(servoNumber, mqttConfig) {
   // const self = this;
-  return new Servo(this.servoAngle(servoNumber));
+  return new Servo(this.servoAngle(servoNumber), mqttConfig);
 };
 
 ServoController.prototype.release = function release() {
