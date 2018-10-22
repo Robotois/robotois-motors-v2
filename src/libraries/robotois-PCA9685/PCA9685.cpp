@@ -38,6 +38,7 @@ PCA9685::PCA9685(uint8_t _addr) {
         return;
 //        return;
     }
+    printf("Successfully read from PWM Device...\n");
     initialize();
 }
 
@@ -209,8 +210,8 @@ void PCA9685::setPWM(uint8_t _init_channel, uint8_t _channel_count, uint16_t *_p
     // - The initial channel address
     _wBuf[0] = PCA9685_CH0_ON_L+(4*_init_channel);
 
-    for(uint8_t i = 0; i < _channel_count; i++){
-        if(invertedMode){
+    for(uint8_t i = 0; i < _channel_count; i++) {
+        if(invertedMode) {
             if(_pwm_array[i] == 0){ // - OFF state
                 onTime = 4096;
                 offTime = 0;
@@ -258,5 +259,5 @@ void PCA9685::bcm_end(){
 
 void PCA9685::release(){
     allOff();
-    // bcm_end();    
+    // bcm_end();
 }

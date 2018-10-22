@@ -31,6 +31,7 @@ void ServosWrapper::Init(){
   // Prototype
   NODE_SET_PROTOTYPE_METHOD(tpl,"setAngle",setAngle);
   NODE_SET_PROTOTYPE_METHOD(tpl,"release",release);
+  NODE_SET_PROTOTYPE_METHOD(tpl,"drive",drive);
 
   constructor.Reset(isolate,tpl->GetFunction());
 }
@@ -114,5 +115,26 @@ void ServosWrapper::setAngle(const FunctionCallbackInfo<Value>& args){
 
   ServosWrapper* temp_obj = ObjectWrap::Unwrap<ServosWrapper>(args.Holder());
   temp_obj->servos->setAngle(servoNumber,angle);
+  // args.GetReturnValue().Set();
+}
+
+void ServosWrapper::drive(const FunctionCallbackInfo<Value>& args){
+  Isolate* isolate = Isolate::GetCurrent();
+  HandleScope scope(isolate);
+
+  uint8_t _argc = args.Length();
+  // - It is required four arguments: LedNumber, RedCode, GreenCode and BlueCode
+  // - The RGB code can take values in the range of 0 - 255 for each channel
+  if(_argc != 3){
+    isolate->ThrowException(Exception::TypeError(
+    String::NewFromUtf8(isolate, "Wrong arguments for Servos Module...")));
+  }
+
+  float x = (float) args[0]->NumberValue();
+  float y = (float) args[1]->NumberValue();
+  float r = (float) args[2]->NumberValue();
+
+  ServosWrapper* temp_obj = ObjectWrap::Unwrap<ServosWrapper>(args.Holder());
+  temp_obj->servos->drive(x, y, r);
   // args.GetReturnValue().Set();
 }

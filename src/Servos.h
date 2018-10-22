@@ -16,7 +16,7 @@
 #define SERVOS_CENTER_OFF_TIME 307.2f // => 1500us
 #define SERVOS_MAX_TRAVEL 90.0f
 #define SERVOS_MIN_TRAVEL -90.0f
-#define SERVOS_PCA_PRESCALE 0x7D // - Prescaler => 50Hz
+#define SERVOS_PCA_PRESCALE 0x06 // - Prescaler => 1000Hz
 // - Configuracion de tiempos, 800->2200 usec => 165 degrees
 //    static const uint16_t minOnTime = 164,maxOnTime = 451, delay = 410;
 
@@ -33,9 +33,15 @@ public:
     void initialize();
     void setAngle(uint8_t servoNumber,float degree);
     void release();
+    void drive(float x, float y, float r);
+    void buildPWMArray(uint8_t motorNumber, int pwm);
 private:
     uint16_t onTime, offTime;
-    float centerOffTime, angleTimeRatio;
+    uint16_t pwm_array[12];
+    float centerOffTime, angleTimeRatio, thetaSin, thetaCos;
+
+    float x, y;
+    uint16_t maxPWM;
 
     PCA9685 *pwmModule;
 

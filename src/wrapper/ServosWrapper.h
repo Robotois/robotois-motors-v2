@@ -16,6 +16,7 @@ private:
 
   static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
   static void setAngle(const v8::FunctionCallbackInfo<v8::Value>& args);
+  static void drive(const v8::FunctionCallbackInfo<v8::Value>& args);
 
   static void release(const v8::FunctionCallbackInfo<v8::Value>& args);
 

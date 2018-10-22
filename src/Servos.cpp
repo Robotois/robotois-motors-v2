@@ -8,12 +8,15 @@
 #include <cmath>
 #include <stdlib.h>
 #include <iostream>
+#include <math.h>       /* sin */
 
 Servos::Servos(uint8_t _addr) {
     pwmModule = new PCA9685(_addr);
     pwmModule->setPreScale(SERVOS_PCA_PRESCALE);
-
+    maxPWM = 4095;
     angleTimeRatio = (SERVOS_MAX_ON_TIME - SERVOS_MIN_ON_TIME)/180.0f;
+    thetaSin = sin(-45.0f);
+    thetaCos = cos(-45.0f);
 }
 
 Servos::Servos(const Servos& orig) {
@@ -39,7 +42,43 @@ void Servos::setAngle(uint8_t servoNumber, float degree){
     pwmModule->setPWM(servoNumber-1,offTime);
 }
 
-float Servos::constrain(float value, float min, float max){
+void Servos::drive(float xIn, float yIn, float r) {
+  x = xIn * thetaCos - yIn * thetaSin;
+  y = xIn * thetaSin + yIn * thetaCos;
+  // printf("x: %f, y: %f, r: %f\n", x, y, r);
+
+  buildPWMArray(0, (-x - r * 0.40) * maxPWM);
+  buildPWMArray(2, (x - r * 0.40) * maxPWM);
+  buildPWMArray(1, (y - r * 0.40) * maxPWM);
+  buildPWMArray(3, (-y - r * 0.40) * maxPWM);
+  // for (uint8_t i = 0; i < 12; i++) {
+  //   printf("%d, ", pwm_array[i]);
+  // }
+  // printf("\n");
+  pwmModule->setPWM(0, 12, pwm_array);
+}
+
+// motorNumber: [0-3]
+void Servos::buildPWMArray(uint8_t motorNumber, int pwm) {
+  uint idx = motorNumber * 3;
+  if(pwm == 0) {
+    pwm_array[idx] = maxPWM;
+    pwm_array[idx + 1] = maxPWM;
+    pwm_array[idx + 2] = 0;
+    return;
+  }
+  if(pwm > 0) {
+    pwm_array[idx] = maxPWM;
+    pwm_array[idx + 1] = 0;
+    pwm_array[idx + 2] = (uint16_t) pwm;
+    return;
+  }
+  pwm_array[idx] = 0;
+  pwm_array[idx + 1] = maxPWM;
+  pwm_array[idx + 2] = (uint16_t)(-pwm);
+}
+
+float Servos::constrain(float value, float min, float max) {
     if(value > max){
       return max;
     }

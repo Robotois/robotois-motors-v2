@@ -20,6 +20,10 @@ function ServoController(address = 0) {
   });
 }
 
+ServoController.prototype.drive = function drive(x = 0, y = 0, r = 0) {
+  this.servos.drive(x, y, r);
+};
+
 ServoController.prototype.setAngle = function setAngle(servoNumber, angle) {
   this.servos.setAngle(servoNumber, angle);
 };
