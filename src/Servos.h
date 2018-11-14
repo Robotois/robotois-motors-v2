@@ -41,11 +41,11 @@ private:
     float centerOffTime, angleTimeRatio, thetaSin, thetaCos;
 
     float x, y;
-    uint16_t maxPWM;
+    int maxPWM;
 
     PCA9685 *pwmModule;
 
-    float constrain(float value, float min, float max);
+    int constrain(int value, int min, int max);
 };
 
 #endif	/* SERVOS_H */

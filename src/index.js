@@ -24,22 +24,22 @@ ServoController.prototype.drive = function drive(x = 0, y = 0, r = 0) {
   this.servos.drive(x, y, r);
 };
 
-ServoController.prototype.setAngle = function setAngle(servoNumber, angle) {
-  this.servos.setAngle(servoNumber, angle);
-};
+// ServoController.prototype.setAngle = function setAngle(servoNumber, angle) {
+//   this.servos.setAngle(servoNumber, angle);
+// };
 
-ServoController.prototype.servoAngle = function servoAngle(servoNumber) {
-  const self = this;
-  return (angle) => {
-    self.servos.setAngle(servoNumber, angle);
-  };
-};
-  // servoNumber => angle => this.servos.setAngle(servoNumber, angle);
+// ServoController.prototype.servoAngle = function servoAngle(servoNumber) {
+//   const self = this;
+//   return (angle) => {
+//     self.servos.setAngle(servoNumber, angle);
+//   };
+// };
+//   // servoNumber => angle => this.servos.setAngle(servoNumber, angle);
 
-ServoController.prototype.createServo = function createServo(servoNumber, mqttConfig) {
-  // const self = this;
-  return new Servo(this.servoAngle(servoNumber), mqttConfig);
-};
+// ServoController.prototype.createServo = function createServo(servoNumber, mqttConfig) {
+//   // const self = this;
+//   return new Servo(this.servoAngle(servoNumber), mqttConfig);
+// };
 
 ServoController.prototype.release = function release() {
   this.servos.release();

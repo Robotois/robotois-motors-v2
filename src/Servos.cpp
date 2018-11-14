@@ -31,26 +31,26 @@ Servos::~Servos() {
  * @param degree: Angulo en grados centigrados => [-82.5 - 82.5].
  * para un angulo de 0° el servo apunta verticalmente hacia arriba.
  */
-void Servos::setAngle(uint8_t servoNumber, float degree){
-    float deg = constrain(degree, SERVOS_MIN_TRAVEL, SERVOS_MAX_TRAVEL);
-    offTime = (uint16_t) round(SERVOS_CENTER_OFF_TIME + deg*angleTimeRatio);
-    // printf("Angle: %0.2f, OffTime: %d\n", deg, offTime);
-    if(servoNumber <1 and servoNumber > 3){
-        printf("Error: Wrong Channel Selection for the Servo Module...\n");
-        return;
-    }
-    pwmModule->setPWM(servoNumber-1,offTime);
-}
+// void Servos::setAngle(uint8_t servoNumber, float degree){
+//     float deg = constrain(degree, SERVOS_MIN_TRAVEL, SERVOS_MAX_TRAVEL);
+//     offTime = (uint16_t) round(SERVOS_CENTER_OFF_TIME + deg*angleTimeRatio);
+//     // printf("Angle: %0.2f, OffTime: %d\n", deg, offTime);
+//     if(servoNumber <1 and servoNumber > 3){
+//         printf("Error: Wrong Channel Selection for the Servo Module...\n");
+//         return;
+//     }
+//     pwmModule->setPWM(servoNumber-1,offTime);
+// }
 
 void Servos::drive(float xIn, float yIn, float r) {
   x = xIn * thetaCos - yIn * thetaSin;
   y = xIn * thetaSin + yIn * thetaCos;
   // printf("x: %f, y: %f, r: %f\n", x, y, r);
 
-  buildPWMArray(0, (-x - r * 0.40) * maxPWM);
-  buildPWMArray(2, (x - r * 0.40) * maxPWM);
-  buildPWMArray(1, (y - r * 0.40) * maxPWM);
-  buildPWMArray(3, (-y - r * 0.40) * maxPWM);
+  buildPWMArray(0, (-x - r * 0.30) * maxPWM * 0.8);
+  buildPWMArray(2, (x - r * 0.30) * maxPWM * 0.8);
+  buildPWMArray(1, (y - r * 0.30) * maxPWM * 0.8);
+  buildPWMArray(3, (-y - r * 0.30) * maxPWM * 0.8);
   // for (uint8_t i = 0; i < 12; i++) {
   //   printf("%d, ", pwm_array[i]);
   // }
@@ -67,18 +67,19 @@ void Servos::buildPWMArray(uint8_t motorNumber, int pwm) {
     pwm_array[idx + 2] = 0;
     return;
   }
+  int finalPWM = constrain(pwm, maxPWM, -maxPWM);
   if(pwm > 0) {
     pwm_array[idx] = maxPWM;
     pwm_array[idx + 1] = 0;
-    pwm_array[idx + 2] = (uint16_t) pwm;
+    pwm_array[idx + 2] = (uint16_t) finalPWM;
     return;
   }
   pwm_array[idx] = 0;
   pwm_array[idx + 1] = maxPWM;
-  pwm_array[idx + 2] = (uint16_t)(-pwm);
+  pwm_array[idx + 2] = (uint16_t)(-finalPWM);
 }
 
-float Servos::constrain(float value, float min, float max) {
+int Servos::constrain(int value, int min, int max) {
     if(value > max){
       return max;
     }
