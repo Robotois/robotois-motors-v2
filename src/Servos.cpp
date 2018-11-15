@@ -67,7 +67,7 @@ void Servos::buildPWMArray(uint8_t motorNumber, int pwm) {
     pwm_array[idx + 2] = 0;
     return;
   }
-  int finalPWM = constrain(pwm, maxPWM, -maxPWM);
+  int finalPWM = constrain(pwm, -maxPWM, maxPWM);
   if(pwm > 0) {
     pwm_array[idx] = maxPWM;
     pwm_array[idx + 1] = 0;
