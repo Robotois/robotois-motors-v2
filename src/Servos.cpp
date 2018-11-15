@@ -47,10 +47,10 @@ void Servos::drive(float xIn, float yIn, float r) {
   y = xIn * thetaSin + yIn * thetaCos;
   // printf("x: %f, y: %f, r: %f\n", x, y, r);
 
-  buildPWMArray(0, (-x - r * 0.30) * maxPWM * 0.8);
-  buildPWMArray(2, (x - r * 0.30) * maxPWM * 0.8);
-  buildPWMArray(1, (y - r * 0.30) * maxPWM * 0.8);
-  buildPWMArray(3, (-y - r * 0.30) * maxPWM * 0.8);
+  buildPWMArray(0, (-x - r * 0.50) * maxPWM * 0.8);
+  buildPWMArray(2, (x - r * 0.50) * maxPWM * 0.8);
+  buildPWMArray(1, (y - r * 0.50) * maxPWM * 0.8);
+  buildPWMArray(3, (-y - r * 0.50) * maxPWM * 0.8);
   // for (uint8_t i = 0; i < 12; i++) {
   //   printf("%d, ", pwm_array[i]);
   // }
