@@ -33,6 +33,7 @@ public:
     void initialize();
     void setAngle(uint8_t servoNumber,float degree);
     void release();
+    void driveOld(float x, float y, float r);
     void drive(float x, float y, float r);
     void buildPWMArray(uint8_t motorNumber, int pwm);
 private:
@@ -40,7 +41,7 @@ private:
     uint16_t pwm_array[12];
     float centerOffTime, angleTimeRatio, thetaSin, thetaCos;
 
-    float x, y;
+    float x, y, m1Speed, m2Speed, m3Speed, m4Speed;
     int maxPWM;
 
     PCA9685 *pwmModule;
