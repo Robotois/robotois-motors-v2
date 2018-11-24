@@ -67,9 +67,17 @@ void Servos::drive(float xIn, float yIn, float r) {
     if (r > 0) {
       m2Speed += -r;
       m3Speed += -r;
+      if (yIn == 0) {
+        m1Speed += -r;
+        m4Speed += -r;
+      }
     } else {
       m1Speed += -r;
       m4Speed += -r;
+      if (yIn == 0) {
+        m2Speed += -r;
+        m3Speed += -r;
+      }
     }
   }
   buildPWMArray(0, m1Speed * maxPWM);

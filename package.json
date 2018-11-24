@@ -1,20 +1,29 @@
 {
-  "name": "robotois-servo-controller",
+  "name": "robotois-motors-v2",
   "version": "1.0.1",
-  "description": "Node library for controlling Servos",
+  "description": "Node library to drive Holonomic robot",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "servos"
+    "Motors",
+    "Raspberry PI",
+    "PWM",
+    "node.js",
+    "IoT"
   ],
-  "author": "yovany@robotois.com",
+  "author": "yovany.lg@gmail.com",
   "contributors": [
     {
       "name": "Armando Gonzalez",
       "email": "iam@armando.mx",
       "url": "http://armando.mx/"
+    },
+    {
+      "name": "Yovany Luis",
+      "email": "yovany.lg@gmail.com",
+      "url": "https://www.linkedin.com/in/yovanylg/"
     }
   ],
   "homepage": "https://github.com/Robotois/robotois-servo-controller",
