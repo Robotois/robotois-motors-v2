@@ -61,29 +61,23 @@ void Servos::driveOld(float xIn, float yIn, float r) {
 void Servos::drive(float xIn, float yIn, float r) {
   m1Speed = -yIn;
   m2Speed = yIn;
-  m3Speed = yIn;
-  m4Speed = -yIn;
   if(r != 0) {
     if (r > 0) {
       m2Speed += -r;
-      m3Speed += -r;
       if (yIn == 0) {
         m1Speed += -r;
-        m4Speed += -r;
       }
     } else {
       m1Speed += -r;
-      m4Speed += -r;
       if (yIn == 0) {
         m2Speed += -r;
-        m3Speed += -r;
       }
     }
   }
   buildPWMArray(0, m1Speed * maxPWM);
   buildPWMArray(2, m2Speed * maxPWM);
-  buildPWMArray(1, m3Speed * maxPWM);
-  buildPWMArray(3, m4Speed * maxPWM);
+  buildPWMArray(1, 0);
+  buildPWMArray(3, 0);
   // for (uint8_t i = 0; i < 12; i++) {
   //   printf("%d, ", pwm_array[i]);
   // }
