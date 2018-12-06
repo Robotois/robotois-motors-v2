@@ -35,6 +35,7 @@ public:
     void release();
     void driveOld(float x, float y, float r);
     void drive(float x, float y, float r);
+    void sendPWMArray();
     void buildPWMArray(uint8_t motorNumber, int pwm);
 private:
     uint16_t onTime, offTime;

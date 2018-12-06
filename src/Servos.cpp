@@ -17,6 +17,8 @@ Servos::Servos(uint8_t _addr) {
     angleTimeRatio = (SERVOS_MAX_ON_TIME - SERVOS_MIN_ON_TIME)/180.0f;
     thetaSin = sin(-45.0f);
     thetaCos = cos(-45.0f);
+    m3Speed = 0;
+    m4Speed = 0;
 }
 
 Servos::Servos(const Servos& orig) {
@@ -58,31 +60,44 @@ void Servos::driveOld(float xIn, float yIn, float r) {
   pwmModule->setPWM(0, 12, pwm_array);
 }
 
-void Servos::drive(float xIn, float yIn, float r) {
-  m1Speed = -yIn;
-  m2Speed = yIn;
-  if(r != 0) {
-    if (r > 0) {
-      m2Speed += -r;
-      if (yIn == 0) {
-        m1Speed += -r;
-      }
-    } else {
-      m1Speed += -r;
-      if (yIn == 0) {
-        m2Speed += -r;
-      }
-    }
-  }
+void Servos::sendPWMArray() {
   buildPWMArray(0, m1Speed * maxPWM);
   buildPWMArray(2, m2Speed * maxPWM);
   buildPWMArray(1, 0);
   buildPWMArray(3, 0);
-  // for (uint8_t i = 0; i < 12; i++) {
-  //   printf("%d, ", pwm_array[i]);
-  // }
-  // printf("\n");
   pwmModule->setPWM(0, 12, pwm_array);
+}
+
+void Servos::drive(float xIn, float yIn, float r) {
+  if (yIn == 0) {
+    m1Speed = -r;
+    m2Speed = -r;
+    sendPWMArray();
+    return;
+  }
+  m1Speed = -yIn;
+  m2Speed = yIn;
+  if (r == 0) {
+    sendPWMArray();
+    return;
+  }
+  if (yIn > 0) {
+    if (r > 0) {
+      m2Speed = yIn - r;
+    }
+    if (r < 0) {
+      m1Speed = -yIn - r;
+    }
+  } else {
+    if (r > 0) {
+      m2Speed = yIn + r;
+    }
+    if (r < 0) {
+      m1Speed = -yIn + r;
+    }
+  }
+  sendPWMArray();
+  return;
 }
 
 // motorNumber: [0-3]
