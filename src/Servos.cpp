@@ -90,7 +90,11 @@ void Servos::drive(float xIn, float yIn, float r) {
     return;
   }
   else{
-     if(yIn !=0 && r==0){
+      if(yIn==0 && r==0){
+        m1Speed=0;
+        m2Speed=0;
+      }
+      else if(yIn !=0 && r==0){
         m1Speed= yIn;
         m2Speed= yIn;
       }
