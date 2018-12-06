@@ -104,8 +104,8 @@ void Servos::drive(float xIn, float yIn, float r) {
           m2Speed= -r;
         }
         else if(r<0){
-          m1Speed= -r;
-          m2Speed= r;
+          m1Speed= r;
+          m2Speed= -r;
         }
       }
   }
