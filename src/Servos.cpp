@@ -72,18 +72,18 @@ void Servos::drive(float xIn, float yIn, float r) {
   if(yIn!=0 && r!=0){
     if(yIn >0 && r>0){ //Frente y giro horario
         m1Speed= yIn;
-        m2Speed= yIn-2*(yIn*abs(r));
+        m2Speed= yIn-1.5*(yIn*abs(r));
     }
     if(yIn >0 && r<0){//Frente y giro antihorario
-        m1Speed= yIn-2*(yIn*abs(r));
+        m1Speed= yIn-1.5*(yIn*abs(r));
         m2Speed= yIn;
     }
     if(yIn < 0 && r>0){ //Giro hacia atras y giro antihorario
         m1Speed= yIn;
-        m2Speed= yIn-2*(yIn*abs(r));
+        m2Speed= yIn-1.5*(yIn*abs(r));
     }
     if(yIn<0 && r<0){//Giro hacia atras y giro horario
-        m1Speed= yIn-2*(yIn*abs(r));
+        m1Speed= yIn-1.5*(yIn*abs(r));
         m2Speed= yIn;
     }
     sendPWMArray();
