@@ -63,8 +63,8 @@ void Servos::driveOld(float xIn, float yIn, float r) {
 void Servos::sendPWMArray() {
   buildPWMArray(0, m1Speed * maxPWM);
   buildPWMArray(2, m2Speed * maxPWM);
-  buildPWMArray(1, 0);
-  buildPWMArray(3, 0);
+  buildPWMArray(1, m2Speed * maxPWM);
+  buildPWMArray(3, m1Speed * maxPWM);
   pwmModule->setPWM(0, 12, pwm_array);
 }
 
