@@ -69,32 +69,49 @@ void Servos::sendPWMArray() {
 }
 
 void Servos::drive(float xIn, float yIn, float r) {
-  if (yIn == 0) {
-    m1Speed = -r;
-    m2Speed = -r;
+  if(yIn!=0 && r!=0){
+    if(yIn >0 && r>0){ //Frente y giro horario
+        m1Speed= yIn;
+        m2Speed= yIn-1.5*(yIn*abs(r));
+    }
+    if(yIn >0 && r<0){//Frente y giro antihorario
+        m1Speed= yIn-1.5*(yIn*abs(r));
+        m2Speed= yIn;
+    }
+    if(yIn < 0 && r>0){ //Giro hacia atras y giro antihorario
+        m1Speed= yIn;
+        m2Speed= yIn-1.5*(yIn*abs(r));
+    }
+    if(yIn<0 && r<0){//Giro hacia atras y giro horario
+        m1Speed= yIn-1.5*(yIn*abs(r));
+        m2Speed= yIn;
+    }
     sendPWMArray();
     return;
   }
-  m1Speed = -yIn;
-  m2Speed = yIn;
-  if (r == 0) {
-    sendPWMArray();
-    return;
-  }
-  if (yIn > 0) {
-    if (r > 0) {
-      m2Speed = yIn - r;
-    }
-    if (r < 0) {
-      m1Speed = -yIn - r;
-    }
-  } else {
-    if (r > 0) {
-      m2Speed = yIn + r;
-    }
-    if (r < 0) {
-      m1Speed = -yIn + r;
-    }
+  else{
+      if(yIn==0 && r==0){
+        m1Speed=0;
+        m2Speed=0;
+      }
+      else if(yIn !=0 && r==0){
+        m1Speed= yIn;
+        m2Speed= yIn;
+      }
+      else if(yIn==0 && r!=0){
+        if(r>0.4){
+          m1Speed= 0.5*r;
+          m2Speed= -0.5*r;
+        }
+        else if(r<-0.4){
+          m1Speed= 0.5*r;
+          m2Speed= -0.5*r;
+        }
+        else{
+          m1Speed=0;
+          m2Speed=0;
+        }
+      }
   }
   sendPWMArray();
   return;
