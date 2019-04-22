@@ -1,7 +1,7 @@
 /*
  * File:   Servos.cpp
  * Author: yova
- *
+ * Author: Victor
  * Created on 21 de diciembre de 2015, 11:10 PM
  */
 #include "Servos.h"
@@ -27,92 +27,21 @@ Servos::Servos(const Servos& orig) {
 Servos::~Servos() {
 }
 
-/**
- * Establece el angulo de un Servo en particular.
- * @param servoNumber: Numero del servo => 0-7.
- * @param degree: Angulo en grados centigrados => [-82.5 - 82.5].
- * para un angulo de 0° el servo apunta verticalmente hacia arriba.
- */
-// void Servos::setAngle(uint8_t servoNumber, float degree){
-//     float deg = constrain(degree, SERVOS_MIN_TRAVEL, SERVOS_MAX_TRAVEL);
-//     offTime = (uint16_t) round(SERVOS_CENTER_OFF_TIME + deg*angleTimeRatio);
-//     // printf("Angle: %0.2f, OffTime: %d\n", deg, offTime);
-//     if(servoNumber <1 and servoNumber > 3){
-//         printf("Error: Wrong Channel Selection for the Servo Module...\n");
-//         return;
-//     }
-//     pwmModule->setPWM(servoNumber-1,offTime);
-// }
-
-void Servos::driveOld(float xIn, float yIn, float r) {
-  x = xIn * thetaCos - yIn * thetaSin;
-  y = xIn * thetaSin + yIn * thetaCos;
-  // printf("x: %f, y: %f, r: %f\n", x, y, r);
-
-  buildPWMArray(0, (-x - r) * maxPWM);
-  buildPWMArray(2, (x - r) * maxPWM);
-  buildPWMArray(1, (y - r) * maxPWM);
-  buildPWMArray(3, (-y - r) * maxPWM);
-  // for (uint8_t i = 0; i < 12; i++) {
-  //   printf("%d, ", pwm_array[i]);
-  // }
-  // printf("\n");
-  pwmModule->setPWM(0, 12, pwm_array);
-}
-
 void Servos::sendPWMArray() {
-  buildPWMArray(0, m1Speed * maxPWM);
-  buildPWMArray(2, m2Speed * maxPWM);
-  buildPWMArray(1, 0);
-  buildPWMArray(3, 0);
+  buildPWMArray(0, m1Speed);
+  buildPWMArray(2, m2Speed);
   pwmModule->setPWM(0, 12, pwm_array);
 }
 
 void Servos::drive(float xIn, float yIn, float r) {
-  if(yIn!=0 && r!=0){
-    if(yIn >0 && r>0){ //Frente y giro horario
-        m1Speed= yIn;
-        m2Speed= yIn-1.5*(yIn*abs(r));
-    }
-    if(yIn >0 && r<0){//Frente y giro antihorario
-        m1Speed= yIn-1.5*(yIn*abs(r));
-        m2Speed= yIn;
-    }
-    if(yIn < 0 && r>0){ //Giro hacia atras y giro antihorario
-        m1Speed= yIn;
-        m2Speed= yIn-1.5*(yIn*abs(r));
-    }
-    if(yIn<0 && r<0){//Giro hacia atras y giro horario
-        m1Speed= yIn-1.5*(yIn*abs(r));
-        m2Speed= yIn;
-    }
-    sendPWMArray();
-    return;
-  }
-  else{
-      if(yIn==0 && r==0){
-        m1Speed=0;
-        m2Speed=0;
-      }
-      else if(yIn !=0 && r==0){
-        m1Speed= yIn;
-        m2Speed= yIn;
-      }
-      else if(yIn==0 && r!=0){
-        if(r>0.4){
-          m1Speed= 0.5*r;
-          m2Speed= -0.5*r;
-        }
-        else if(r<-0.4){
-          m1Speed= 0.5*r;
-          m2Speed= -0.5*r;
-        }
-        else{
-          m1Speed=0;
-          m2Speed=0;
-        }
-      }
-  }
+  float wheel_rad=0.1;
+  float wheel_sep=0.3;
+  float speed_lin=1.57*yIn;
+  float speed_ang=-10.46*r;
+  float w_r=(speed_lin/wheel_rad)+((speed_ang*wheel_sep)/(2*wheel_rad));
+  float w_l=(speed_lin/wheel_rad)-((speed_ang*wheel_sep)/(2*wheel_rad));
+  m1Speed=w_l*160;  //260 is the max
+  m2Speed=w_r*160;
   sendPWMArray();
   return;
 }
