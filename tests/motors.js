@@ -4,13 +4,14 @@ const servoController = new ServoController(0);
 
 let speed = 0;
 let sum = 10;
+const ratio = 4095 / 100;
 
 setInterval(() => {
-  servoController.drive(speed, speed, speed, speed);
-  if (speed === 60) {
+  servoController.drive(0, speed * ratio, 0, 0);
+  if (speed === 40) {
     sum = -10;
   }
-  if (speed === -60) {
+  if (speed === -40) {
     sum = 10;
   }
   speed += sum;

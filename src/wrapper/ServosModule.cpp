@@ -1,17 +1,20 @@
 #include <node.h>
 #include "ServosWrapper.h"
 
-using namespace v8;
+namespace demo {
+using v8::Local;
+using v8::Object;
 
-void CreateObject(const FunctionCallbackInfo<Value>& args) {
-  Isolate* isolate = Isolate::GetCurrent();
-  HandleScope scope(isolate);
-  ServosWrapper::NewInstance(args);
+// void CreateObject(const FunctionCallbackInfo<Value>& args) {
+//   Isolate* isolate = Isolate::GetCurrent();
+//   HandleScope scope(isolate);
+//   ServosWrapper::NewInstance(args);
+// }
+
+void InitAll(Local<Object> exports) {
+  ServosWrapper::Init(exports);
 }
 
-void InitAll(Handle<Object> exports, Handle<Object> module) {
-  ServosWrapper::Init();
-  NODE_SET_METHOD(module,"exports",CreateObject);
-}
+NODE_MODULE(NODE_GYP_MODULE_NAME, InitAll)
 
-NODE_MODULE(ServosModule, InitAll)
+} // namespace demo
